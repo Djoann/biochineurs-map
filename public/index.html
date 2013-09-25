@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>NetMap - New industrial revolution happen with hackers</title>
+
+    <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="leaflet-0.6.4/leaflet.css" />
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    
+    
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!--  GEOCODER -->    
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    
+    
+    
+    
+    
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css' rel='stylesheet' />
+    <!--[if lte IE 8]>
+      <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css' rel='stylesheet'>
+    <![endif]-->
+    
+    
+    <script src="leaflet-pip.js"></script>
+    
+    
+        <style>
+        
+        body {
+            font-family: helvetica, arial, verdana, sans-serif;
+            font-size: 13px !important;
+            margin: 0px;
+        }
+        #map { z-index: 10;
+            width: 70%; height: 500px; margin: 0 0 0 0px;
+        }
+        
+        #menu {
+    background-color: white;
+    top: 1px;
+    z-index: 999;
+    position: fixed;
+    height: 610px;
+    overflow: scroll;
+    width: 400px;
+    float: right;
+    margin-left: 65%;
+        }
+        
+        a {
+        color: rgba(91, 183, 91, 0.9);
+        }
+        
+        h4 {
+            text-align: center ;
+        }
+        
+        ul {
+            margin: 0px;
+        }
+        
+        .mailto {
+            text-decoration: none;
+            color: #FFF;
+            float: right;
+        }
+        
+        .legende {
+            text-decoration: none !important;
+            color: white;    
+        }
+        
+        
+        
+/*     INFOFIXED   */    
+        
+        .infofixed {
+            background-color: white;
+            width: 100%;
+            height: 0px;
+            display: none;
+        }
+        
+        .info {
+            float: left;
+            width: 300px;
+            height: 50px;
+            background-color: #B14E5A;
+            border-radius: 5px;
+            margin: 5px;
+            padding: 10px;
+        }
+        
+        
+        .cybertaupeslist {
+            max-height: 400px;
+            overflow: scroll;
+        }
+        
+        .cybertaupe:hover {
+            background-color: #000;
+            color: ;
+        }
+        
+        
+/*   END INFOFIXED      */
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+        .title1 {
+            color: #610B15;
+            padding: 10px;
+            height: 50px;
+            position: relative;
+            line-height: 20px !important;
+            font: bold 4em/5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+        }
+        #photos {
+            margin: auto;
+        }
+        
+        #groups {
+            padding: 20px;
+            top: 120px;
+            position: fixed;
+            overflow-y: scroll;
+            height: 450px;
+        }
+        
+        .leaflet-popup-content-wrapper {
+            max-width: 250px;
+        }
+        
+        .display {
+            position: fixed;
+            margin-top: 2%;
+            margin-left: 59%;
+            z-index: 10;
+        }
+        
+        .leaflet-popup-close-button {
+            position: fixed;
+            margin-top: 20px;
+            margin-left: 180px;
+            z-index: 1500;
+        }
+        
+        
+        .input_text {
+        padding:10px 10px !important;
+        background:#fff !important;
+        border-bottom: 2px double #610B15 !important;
+        border-top: 2px double #610B15 !important;
+        border-left: 2px double #610B15 !important;
+        border-right: 2px double #610B15 !important;
+        
+        }
+        
+        #navRightWrapper {
+            width: 30%;
+            right: 0px;
+            height: 640px;
+            position: fixed; 
+            z-index: 200;  
+        }
+        
+        
+        
+        .navRightHeader {
+            position: relative !important;
+            padding: 10px;
+            width: 100%;
+            height: 20px;
+            border-bottom: rgba(0, 0, 0, 0.2) solid thin;
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-addnew {
+            background: rgba(91, 183, 91, 0.9) !important;
+            color: white !important;
+            text-shadow: none;
+            text-decoration: none;
+            margin-right: 50px;
+            float: right;
+        }
+        
+        #bigSearch {
+            padding: 4px 6px !important;
+            width: 86% !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            border-radius: 0px !important;
+    
+        }
+        
+        .navRightTop {
+            display: table;
+                width: 100%;
+            overflow: hidden !important;
+            position: relative;
+        } 
+        
+        #navbar {
+            float: left;
+            background: white;
+            height: 40px;
+            width: 70%;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            
+        }
+        
+        
+        .brand {
+            text-decoration: none;
+            margin: 10px;
+            margin-left: 30px;
+        }
+        .green {
+            color: green;
+        }
+        
+        .black {
+            color: black;
+        }
+        
+        .calltoact {
+        
+            text-align: center;
+            color: white;
+            background-color: rgba(91, 183, 91, 0.9) !important;
+            width: 90%;
+            border-radius: 1px !important;
+            border: rgba(0, 0, 0, 0.2) solid thin;
+            width: 50%;
+            margin-right: 30px;
+            float: right;
+        }
+        
+        
+        #backTolist {
+            margin-top: 25px;
+            margin-right: 82px;
+            
+        }
+        
+        #SubmitTolist {
+            margin-top: 25px;
+            margin-right: 82px;
+        }
+        
+        .inputcontrols {
+            margin: auto;
+            width: 50%;
+        }
+        
+        
+        ul.supercategories-menu {
+        border-top: rgba(0, 0, 0, 0.1) solid thin;
+        background: rgba(91, 183, 91, 0.9) !important;
+        display: table;
+        table-layout: fixed;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        text-align: center;
+        width: 30%;
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+        }
+        
+        li.listCategory {
+        height: 50px;
+        background: rgba(0, 0, 0, 0.1) !important;
+        color: white;
+        display: table-cell;
+        float: none;
+        text-align: center;
+        width: 100%;
+        padding-top: 5px;
+        }
+        
+        div.horizontal-menu ul.supercategories-menu li a {
+            display: inline-block;
+            padding: 10px 0px 5px 0px !important;
+            display: table-cell;
+            float: none;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .listEntry-inner {
+            padding: 4px 7px 4px 10px;
+            cursor: pointer;
+        }
+        
+        .listCategories {
+        overflow: scroll;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.05);
+        border-bottom: rgba(0, 0, 0, 0.1) solid thin;
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+        }
+        
+        .toplistCategory:hover {
+            background-color: #fff;
+        }
+        
+        .nav-tabs {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .tabbable {
+            overflow-y: scroll;
+            height: 350px;
+        }
+        
+        .formCoords {
+        }
+        
+        .formSender a {
+            color: rgba(91, 183, 91, 0.9) !important;
+        } 
+        
+        
+        .supercategory {
+            color: #fff;
+        }
+
+
+        
+        
+        #map {
+            float: left;
+            height: 580px;
+        }
+        
+        
+        
+        #locationSearch {
+            padding: 4px 6px !important;
+            width: 95% !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            border-radius: 0px !important;    
+        }
+        
+        
+        
+        .horizontal-footer {
+            display: table;
+            width: 100%;
+            position: fixed;
+            bottom: 0px;
+            background: rgba(230, 230, 230, 0.9);
+            border-top: rgba(0, 0, 0, 0.1) solid thin;
+            left: 0px;
+            z-index: 150;
+        }
+        
+        .footertext {
+            padding: 5px 15px;
+            text-align: left;
+            list-style-type: none;
+            margin: 0px;
+        }
+        
+        .footertext li {
+            display: inline;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        </style>
+        
+    
+</head>
+<body>
+
+        <div id="navbar">
+            <ul class="nav horizontal-menu shareButtonsBox" id="shareButtonsBox-companies">
+            	<li style="list-style-type: none; width: 20%;">
+            		<a class="brand" href="/">
+            			<span class="green">NETWORK </span><span class="black"> MAP</span>
+            		</a>
+            	</li>										
+          </ul>    
+        </div>
+          
+        <div id="map">
+                
+                    <div class="navRightTop" style="display:table;width:100%;padding:10px;margin-top: 500px;z-index: 999;">
+                                		<input class="inputsearch" id="locationSearch" type="text" placeholder="Chercher un lieux">
+                    </div>    
+        </div>
+        
+    
+
+<!-- RIGHT NAV -->
+        <div id="navRightWrapper">
+            
+            
+            <div class="navRightHeader">
+             <!-- <button onclick="facebook()">FBdata</button>-->
+              <div id="addNewbtn" class="calltoact" style="cursor: pointer;">
+                 <!--<a href="#new" class="btn-addnew">-->
+                 	<i class="icon-plus"></i>Nouveau
+                 <!--</a> -->
+              </div>
+
+            </div>
+            <div class="navRightTop"style="display:table;width:100%;padding:10px;border-bottom:rgba(0,0,0,.1) solid thin;background:white;">
+            		<input  class="inputsearch" id="bigSearch" type="text" placeholder="Chercher une organisation" data-companies="Chercher un lieux">
+            </div>
+            
+            <div class="infofixed">
+                
+                
+                <ul class="cybertaupeslist"></ul>
+                
+                <div id="backTolist" class="calltoact" style="cursor: pointer;">
+                                 <!--<a href="#new" class="btn-addnew">-->
+                     <i class="icon-th-list"></i>Retour Liste
+                                 <!--</a> -->
+                </div>
+            </div>
+            
+<!--      Categories      -->
+            <ul class="listCategories">
+            
+            
+<!--                <li class="toplistCategory"><div class="listEntry-inner">
+                    Hackerspaces
+                </div></li>
+-->
+                
+                
+                
+            </ul>
+            
+            
+            
+<!-- Formulaire -->
+
+
+            <div class="tabbable"> <!-- 2 section form -->
+              <ul class="nav nav-tabs">
+                <li class="active formSender"><a href="#tab1" data-toggle="tab">Section 1</a></li>
+                <li class="formSender"><a href="#tab2" data-toggle="tab">Section 2</a></li>
+              </ul>
+              <div class="tab-content">
+              
+              
+                <div class="tab-pane active" id="tab1">
+                  <h4>Register Bio-Hacker</h4>
+                  <div class="controls">
+                      
+                      <div class="inputcontrols">
+                          
+                          <div class="formCoords"></div>
+                          
+                          
+                          <input type="text" class="user-name" placeholder="Name" name="" value="" />
+                          
+                          <input  class="user-address" id="searchaddressbox" type="text" placeholder="Écrire votre addresse" id="inputSearch">
+                          
+                          <input type="text" class="user-description" placeholder="Description" name="" value="" />
+                          
+                          
+                          <!-- Submit USER -->
+                          <button id="submituser" >Submit User</button>
+                          
+                          
+                      
+                      </div> <!--  end inputcontrols   -->
+                      
+                      
+                                            
+                  </div>
+                </div>
+                
+                
+                
+                <div class="tab-pane" id="tab2">
+                  <h4>Register Labo</h4>
+                  
+                  <div class="controls">
+                  
+                      
+                      <div class="inputcontrols">
+                      
+                          <input type="text" class="add-labo" placeholder="NodeName" name="" value="" />
+                          
+                          
+                          
+                          <input type="text" placeholder="NodeName" name="" value="" />
+                          
+                          <input type="text" placeholder="NodeName" name="" value="" />
+                          
+                          <input type="text" placeholder="NodeName" name="" value="" />
+                          
+                          
+                          
+                          <!-- Submit LABO -->
+                          <button id="submitlabo">Submit Labo</button>
+                      
+                      </div> <!--  end inputcontrols   -->
+                      
+                  
+                  </div>
+                </div>
+                
+                
+              </div>
+              
+              <div id="SubmitTolist" class="calltoact" style="cursor: pointer;">
+                               <!--<a href="#new" class="btn-addnew">-->
+                   <i class="icon-th-list"></i>Retour Liste
+                               <!--</a> -->
+              </div>
+              
+              
+            </div>  <!-- END  2  section form -->
+            
+
+            
+
+<!-- project Count -->
+            <ul class="supercategories-menu">
+                    <li class="listCategory listSuper listCategory-active" data-category="companies" id="listSuper-companies">
+                    	<a class="supercategory" data-supercategory="companies">
+                    		<span class="count">153</span>
+                    		<i class="icon-map-marker"></i>
+                    		<div>Labos</div>
+                    	</a>
+                    </li>
+                    <li class="listCategory listSuper " data-category="people" id="listSuper-people">
+                    	<a class="supercategory" data-supercategory="people">
+                    		<span class="count">79</span>
+                    		<i class="icon-user"></i>
+                    		<div>Chineurs</div>
+                    	</a>
+                    </li>
+                    <li class="listCategory listSuper " data-category="events" id="listSuper-events" style="border-right:none !important;">
+                    	<a class="supercategory" data-supercategory="events">
+                    		<span class="count">13</span>
+                    		<i class="icon-time"></i>
+                    		<div>Evenements</div>
+                    	</a>
+                    </li>
+             </ul>
+            
+        </div>  <!-- END RIGHT NAV -->
+        
+        
+        
+<!--  Footer -->
+        <div class="horizontal-footer">
+            <ul class="footertext">
+            		<li>
+            			<span>Made in France with hackers</span>
+            			<i class="icon-heart"></i>
+            		</li>
+                     -     
+            		<li>
+            			NetMap © 2013
+            		</li>
+                     -
+            		<li>
+            			<a href="#aboutModal" role="button" data-toggle="modal">A propos</a>
+            		</li>
+                     -
+            		<li>
+            			<a href="http://meetup.com/" target="_blank">Meetup</a>
+            		</li>
+                     - 
+            		<li>
+            			<a href="javascript:UserVoice.showPopupWidget();" id="feedbackBoxTrigger" class="feedback">Feedback</a>
+            		</li>
+            	</ul>
+        
+        </div>
+</body>
+
+
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="app.js" type="text/javascript"></script>
+
+<script type="text/javascript"> 
+   
+$(document).ready(loader());
+
+
+
+var text_input = document.getElementById ('locationSearch');
+text_input.focus ();
+text_input.select ();
+
+//set fablabs array list
+//console.log("fabList",fabList)
+
+
+//MAP     
+var coords = 0;
+        
+// SET MASTER MAP
+   var map = L.map('map').setView([3.51342, 41.83594], 3);
+       L.tileLayer('http://{s}.tile.cloudmade.com/ffdd86e27a8a46129afb5e678456afaf/997/256/{z}/{x}/{y}.png', {
+               attribution: 'Hello Place4Home',
+               maxZoom: 18
+       }).addTo(map);
+    
+//EVENT CLICK COORDONNÉS  VAR LAT LNG
+    
+    
+    var popup = L.popup();
+    
+    
+    var bigLat;
+    var bigLng;
+      
+    function onMapClick(e,bigLat,bigLng) {
+    
+        
+        var coords = e.latlng;
+        
+            var lat = coords.lat;
+            var lng = coords.lng;
+            
+            
+            var ilat = 3.51342;
+            var ilng = 41.83594;
+            
+        
+            var issue = map.panBy(new L.Point( lat, lng))
+            var reference = map.panBy(new L.Point( ilat, ilng))
+            reference.distanceTo( issue , reference );
+            
+            
+            
+            
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("hello point !" + coords)
+                    .openOn(map);
+                    
+                    
+
+        
+        
+            
+        //activer fonction recherche de meetups?
+        //    gofetch(lat,lng);
+        console.log(lat);
+        console.log(lng);
+    }
+    
+    
+    //old point lat lng setting user form
+    function pointCoords(usrlat,usrlng) {
+        var coordsHtml = "<div data-lat="+ usrlat +" data-lng="+ usrlng +"  class=\"latlngform\">"+ " lat : " + usrlat + " lng : " + usrlng + "</div>";
+        $(".formCoords").html (coordsHtml);
+    }
+    
+    
+    
+    //activer la fonction on map click
+    map.on('click', onMapClick);
+       
+    //pullmaplab(fabList);
+       
+
+        
+    //take fablab array data and put it in map
+       
+     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //geocoder
+        function initialize() {
+          geocoder = new google.maps.Geocoder();
+          console.log("geocoder initialize");
+        }  
+        
+        google.maps.event.addDomListener(window, 'load', initialize);
+         
+        // Clear when new input    
+        function clear() {
+            $('#groups').children().remove();
+        }
+    
+        
+        //Keypress Input form
+        $("#searchaddressbox").keydown(function(e){
+            if (e.keyCode == 13 && !e.shiftKey)
+            {   
+                var address = $("#searchaddressbox").val();
+                //clear();
+                
+                var usrlat = 0;
+                var usrlng = 0;
+                
+                codeAddress(address,usrlat, usrlng);
+            
+
+            } else {
+            console.log("Geocoding query pas ok");
+        }
+        }); 
+        
+        
+        
+        
+        //Keypress Input form
+        $("#locationSearch").keydown(function(e){
+            if (e.keyCode == 13 && !e.shiftKey)
+            {   
+                var address = $("#locationSearch").val();
+                //clear();
+                codeAddress(address);
+
+            } else {
+            console.log("Geocoding query pas ok");
+        }
+        }); 
+        
+        
+        
+        
+        
+        function codeAddress(address,usrlat,usrlng) {
+          
+          console.log("keypress" + address); 
+          geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              console.log(results);
+              
+              address = 0;
+              console.log(results[0].geometry.location.nb);
+              console.log(results[0].geometry.location.ob);
+              // end interesting function
+              var usrlat = results[0].geometry.location.nb;
+              var usrlng = results[0].geometry.location.ob;
+              map.setView([usrlat, usrlng], 15);
+              if (usrlat && usrlng) {
+              
+              
+                  var marker = L.marker([usrlat, usrlng]).bindPopup().addTo(map);
+                  marker.on("click", function () { marker.openPopup()})
+
+
+                    
+              }
+              
+              pointCoords(usrlat,usrlng);
+              
+              console.log("address;",address);
+              
+        
+            } else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+//        function facebook() {
+//        
+//        $.get('https://graph.facebook.com/search?q=ecology&type=page&fields=id,name,likes, location&limit=5000&access_token=CAACEdEose0cBADqWV3bJwhn5aKNuitUZBn4cFxYev0WTOfAP6kP1TBPGn4kfQLoIvfySHWVbPpdh3It5VgXoW5bW46kGhNYcap7gl7sEnkZCmZACf0GS0LJSbZA4Np8DbLwNT31LjuKjBe4NgejK04ZB5wzHJx2NHvxazZAHGlICHH5BGXivSIZCanwuPXxYRgZD', function(fbdata) {
+//        
+//        
+//          alert('Load was performed.');
+//          console.log("fbdata:",fbdata);
+//          
+//        });}
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+    
+    </script>
+
+
+</html>

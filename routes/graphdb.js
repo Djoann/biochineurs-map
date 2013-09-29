@@ -50,6 +50,8 @@ db
             }
         });
 
+
+
 exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving node: ' + id);
@@ -84,8 +86,16 @@ function getRect(first, second) {
     return result;
 }
 
-exports.findAll = function(req, res) {
-    db.collection('saviorlist', function(err, collection) {
+
+
+
+
+
+
+//*******************************       DB FIND         ***************************//
+
+exports.findUsers = function(req, res) {
+    db.collection('users', function(err, collection) {
         var query = {};
 //        var dirty = req.query.dirty;
 //        dirty = ('' + dirty).toLowerCase();
@@ -106,7 +116,35 @@ exports.findAll = function(req, res) {
     });
 };
 
-exports.addnode = function(req, res) {
+
+exports.findLabos = function(req, res) {
+    db.collection('labos', function(err, collection) {
+        var query = {};
+//        var dirty = req.query.dirty;
+//        dirty = ('' + dirty).toLowerCase();
+//        if (dirty === 'true' || dirty === '1') {
+//            query = {
+//                dirty : true
+//            };
+//        } else if (dirty === 'all') {
+//            query = {};
+//        } else {
+//            query = {
+//                dirty : false
+//            }
+//        }
+        collection.find(query).toArray(function(err, items) {
+            res.send(items);
+        });
+    });
+};
+
+
+
+//*******************************       DB ADD         ***************************//
+
+
+exports.adduser = function(req, res) {
     var node = { "node" : req.body } ;
     //node.name = node ;
 //    var coords = node.geometry.coordinates = node.geometry.coordinates
@@ -120,7 +158,7 @@ exports.addnode = function(req, res) {
 //    }
     node.dirty = true;
     console.log('Adding node: ' + JSON.stringify(node));
-    db.collection('saviorlist', function(err, collection) {
+    db.collection('users', function(err, collection) {
         collection.insert(node, {
             safe : true
         }, function(err, result) {
@@ -133,6 +171,45 @@ exports.addnode = function(req, res) {
         });
     });
 }
+
+
+exports.addLabo = function(req, res) {
+    var node = { "node" : req.body } ;
+    //node.name = node ;
+//    var coords = node.geometry.coordinates = node.geometry.coordinates
+//            || [];
+    var ok = false;
+//    if (coords) {
+//        var len = coords.length || 0;
+//        for ( var i = 0; i < len; i++) {
+//            coords[i] = parseFloat(coords[i]);
+//        }
+//    }
+    node.dirty = true;
+    console.log('Adding node: ' + JSON.stringify(node));
+    db.collection('labos', function(err, collection) {
+        collection.insert(node, {
+            safe : true
+        }, function(err, result) {
+            if (err) {
+                umxUtils.sendError(req, res, err);
+            } else {
+                console.log('Success: ' + JSON.stringify(result[0]));
+                res.send(result[0]);
+            }
+        });
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 exports.updatenode = function(req, res) {
     var id = req.params.id;
@@ -177,11 +254,15 @@ exports.deletenode = function(req, res) {
     });
 }
 
+
+
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the
 // application is started.
 // You'd typically not find this code in a real-life app, since the database
 // would already exist.
+
 var populateDB = function() {
 
     var fs = require('fs');
@@ -201,23 +282,26 @@ var populateDB = function() {
             item.dirty = false;
         }
         console.dir(data);
-
-        db.collection('saviorlist', function(err, collection) {
-            collection.ensureIndex({
-                "geometry.coordinates" : "2dsphere"
-            });
-
-            console.log('[' + data.features.length + '] items to insert.');
-            collection.insert(data.features, {
-                safe : true
-            }, function(err, result) {
-                if (err) {
-                    console.log("ERROR!", err);
-                } else {
-                    console.log('[' + data.features.length + '] items were inserted.');
-                }
-            });
-        });
+        
+        
+        //POPULATE DB FUNCTION
+        
+//        db.collection('saviorlist', function(err, collection) {
+//            collection.ensureIndex({
+//                "geometry.coordinates" : "2dsphere"
+//            });
+//
+//            console.log('[' + data.features.length + '] items to insert.');
+//            collection.insert(data.features, {
+//                safe : true
+//            }, function(err, result) {
+//                if (err) {
+//                    console.log("ERROR!", err);
+//                } else {
+//                    console.log('[' + data.features.length + '] items were inserted.');
+//                }
+//            });
+//        });
 
     });
 

@@ -18,23 +18,46 @@ app.configure(function() {
 
 //app.get('/tw', twitter.getLastTweet);
 
+
 app.get('/hello', function(req,res){
 var body = 'Hello World';
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Content-Length', body.length);
   res.end(body);
 });
-app.get('/graphdb', node.findAll);
+
+
+
+//users
+app.get('/graphdb/users', node.findUsers);
+app.post('/graphdb/users', node.adduser);
+
+
+
+//labos
+app.get('/graphdb/labos', node.findLabos);
+app.post('/graphdb/labos', node.addLabo);
+
+
+
+app.get('/graphdb/:id', node.findById);
+
+
 // This line should be commented to work with static file.
-//app.get('/data/data.json', node.findAll);
+//app.get('/db.json', node.findAll);
 
 //app.get('/graphdb/geo', node.findByBounds);
-app.post('/graphdb', node.addnode);
-app.get('/graphdb/:id', node.findById);
+
 // app.put('/graphdb/:id', node.updatenode);
 // app.delete('/graphdb/:id', node.deletenode);
+
+
+
+//start folder
 app.use(express.static('./public'));
 
+
+//create http server
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });

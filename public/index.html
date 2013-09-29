@@ -17,9 +17,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     
     
-    
-    
-    
     <script src='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js'></script>
     <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css' rel='stylesheet' />
     <!--[if lte IE 8]>
@@ -28,6 +25,32 @@
     
     
     <script src="leaflet-pip.js"></script>
+    
+    <!--LEAFLET DRAW-->
+    <link rel="stylesheet" href="leaflet.draw.css" />
+    <script src="leaflet.draw.js"></script>
+    
+    
+    <!--JQUERY UI-->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
+    
+    <!--JQUERY -->
+    
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+      <style>
+      #toggle {
+        width: 100px;
+        height: 100px;
+        background: #ccc;
+      }
+      </style>
+      <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+      
+      
     
     
         <style>
@@ -57,6 +80,11 @@
         color: rgba(91, 183, 91, 0.9);
         }
         
+        
+        a:hover {
+            cursor: pointer !important;
+        }
+        
         h4 {
             text-align: center ;
         }
@@ -76,9 +104,26 @@
             color: white;    
         }
         
+        .leaflet-control-mapbox-geocoder.active .leaflet-control-mapbox-geocoder-wrap {
+            width: 400px;
+        }
+        
+        .leaflet-control-mapbox-geocoder .leaflet-control-mapbox-geocoder-form input {
+            width: 400px;
+        }
         
         
 /*     INFOFIXED   */    
+        
+        
+        .liopened {
+            background-color: #fff;    
+        }
+        
+        
+        .boxopened {
+            display: block !important;
+        }
         
         .infofixed {
             background-color: white;
@@ -222,6 +267,7 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             
         }
+        
         
         
         .brand {
@@ -408,9 +454,9 @@
           
         <div id="map">
                 
-                    <div class="navRightTop" style="display:table;width:100%;padding:10px;margin-top: 500px;z-index: 999;">
+<!--                    <div class="navRightTop" style="display:table;width:100%;padding:10px;margin-top: 500px;z-index: 999;">
                                 		<input class="inputsearch" id="locationSearch" type="text" placeholder="Chercher un lieux">
-                    </div>    
+                    </div>    -->
         </div>
         
     
@@ -464,8 +510,8 @@
 
             <div class="tabbable"> <!-- 2 section form -->
               <ul class="nav nav-tabs">
-                <li class="active formSender"><a href="#tab1" data-toggle="tab">Section 1</a></li>
-                <li class="formSender"><a href="#tab2" data-toggle="tab">Section 2</a></li>
+                <li class="active formSender"><a href="#tab1" data-toggle="tab">Users</a></li>
+                <li class="formSender"><a href="#tab2" data-toggle="tab">Labos</a></li>
               </ul>
               <div class="tab-content">
               
@@ -508,15 +554,12 @@
                       
                       <div class="inputcontrols">
                       
-                          <input type="text" class="add-labo" placeholder="NodeName" name="" value="" />
                           
+                          <input type="text" class="labo-name" placeholder="Labo Name" name="" value="" />
                           
+                          <input  class="labo-address" type="text" placeholder="Écrire Labo addresse" id="inputSearch">
                           
-                          <input type="text" placeholder="NodeName" name="" value="" />
-                          
-                          <input type="text" placeholder="NodeName" name="" value="" />
-                          
-                          <input type="text" placeholder="NodeName" name="" value="" />
+                          <input type="text" class="labo-description" placeholder="Description" name="" value="" />
                           
                           
                           
@@ -547,24 +590,24 @@
 <!-- project Count -->
             <ul class="supercategories-menu">
                     <li class="listCategory listSuper listCategory-active" data-category="companies" id="listSuper-companies">
-                    	<a class="supercategory" data-supercategory="companies">
+                    	<a class="supercategory" id="labosdbfind">
                     		<span class="count">153</span>
                     		<i class="icon-map-marker"></i>
-                    		<div>Labos</div>
+                    		Labos
                     	</a>
                     </li>
                     <li class="listCategory listSuper " data-category="people" id="listSuper-people">
-                    	<a class="supercategory" data-supercategory="people">
+                    	<a class="supercategory" id="peopledbfind">
                     		<span class="count">79</span>
                     		<i class="icon-user"></i>
-                    		<div>Chineurs</div>
+                    		Chineurs
                     	</a>
                     </li>
                     <li class="listCategory listSuper " data-category="events" id="listSuper-events" style="border-right:none !important;">
-                    	<a class="supercategory" data-supercategory="events">
+                    	<a class="supercategory" id="events">
                     		<span class="count">13</span>
                     		<i class="icon-time"></i>
-                    		<div>Evenements</div>
+                    		Evenements
                     	</a>
                     </li>
              </ul>
@@ -604,72 +647,111 @@
 
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="app.js" type="text/javascript"></script>
+<script src="fluid.js" type="text/javascript"></script>
 
 <script type="text/javascript"> 
    
 $(document).ready(loader());
 
 
+// FOCUS ON INPUT ENTRY
+//var text_input = document.getElementById ('locationSearch');
+//text_input.focus ();
+//text_input.select ();
 
-var text_input = document.getElementById ('locationSearch');
-text_input.focus ();
-text_input.select ();
 
-//set fablabs array list
-//console.log("fabList",fabList)
 
 
 //MAP     
 var coords = 0;
         
 // SET MASTER MAP
-   var map = L.map('map').setView([3.51342, 41.83594], 3);
+   var map = L.mapbox.map('map')
+   
+   
+       .setView([3.51342, 41.83594], 3);
        L.tileLayer('http://{s}.tile.cloudmade.com/ffdd86e27a8a46129afb5e678456afaf/997/256/{z}/{x}/{y}.png', {
                attribution: 'Hello Place4Home',
                maxZoom: 18
        }).addTo(map);
+       
+       map.addControl(L.mapbox.geocoderControl('examples.map-vyofok3q'));
+       
+       
+       
+       
+       
+       //DRAW MAP
+       
+//       var drawControl = new L.Control.Draw({
+//       		position: 'topleft',
+//       		polyline: false,
+//       		marker: false,
+//       		polygon: {
+//       	        shapeOptions: {
+//       	            color: '#434343'
+//       	        }
+//       	    },
+//       	    rectangle: {
+//       	        shapeOptions: {
+//       	            color: '#434343'
+//       	        }
+//       	    },
+//       	    circle: {
+//       	        shapeOptions: {
+//       	            color: '#434343'
+//       	        }
+//       	    }
+//       	});
+//       	map.addControl(drawControl);
+//       
+//       	var drawnItems = new L.LayerGroup();
+//       	map.on('draw:poly-created', function (e) {
+//       		drawnItems.addLayer(e.poly);
+//       		console.log(e.poly);
+//       		loadWithinPolygon(e.poly.getLatLngs(), markers);
+//       	});
+//       	map.on('draw:rectangle-created', function (e) {
+//       		drawnItems.addLayer(e.rect);
+//       		loadWithinBox(e.rect.getBounds(), markers);
+//       	});
+//       	map.on('draw:circle-created', function (e) {
+//       		drawnItems.addLayer(e.circ);
+//       		loadWithinCircle(e.circ.getLatLng(), e.circ.getRadius(), markers);
+//       	});
+//       	map.addLayer(drawnItems);
+       	
+       	
+       
+        
+   
+   
+   
+   
+   
+   
+   
     
 //EVENT CLICK COORDONNÉS  VAR LAT LNG
     
     
     var popup = L.popup();
     
-    
-    var bigLat;
-    var bigLng;
+
       
-    function onMapClick(e,bigLat,bigLng) {
+    function onMapClick(e) {
     
         
         var coords = e.latlng;
         
             var lat = coords.lat;
             var lng = coords.lng;
-            
-            
-            var ilat = 3.51342;
-            var ilng = 41.83594;
-            
-        
-            var issue = map.panBy(new L.Point( lat, lng))
-            var reference = map.panBy(new L.Point( ilat, ilng))
-            reference.distanceTo( issue , reference );
-            
-            
-            
-            
+                   
                 popup
                     .setLatLng(e.latlng)
                     .setContent("hello point !" + coords)
                     .openOn(map);
                     
-                    
-
-        
-        
-            
-        //activer fonction recherche de meetups?
-        //    gofetch(lat,lng);
         console.log(lat);
         console.log(lng);
     }
@@ -692,14 +774,7 @@ var coords = 0;
         
     //take fablab array data and put it in map
        
-     
-        
-        
-        
-        
-        
-        
-        
+
         
         
         //geocoder
